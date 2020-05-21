@@ -1,5 +1,12 @@
 # ime-sample
 
+[デモページ](https://takerutakeru.github.io/IME-demo/)
+
+## 見方
+- PCの場合は`PC Track`にトラッキング結果の文字が配列で詰められていきます。
+- SPでIOSの場合は`IOS Track`にトラッキング結果の文字が配列で詰められていきます。
+- SPでAndroidの場合は`Android Track`にトラッキング結果の文字が配列で詰められていきます。
+
 ## Project setup
 ```
 yarn install
