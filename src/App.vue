@@ -44,7 +44,6 @@ export default {
   data: function() {
     return {
       datas: [],
-      data: "",
       pcTrack: [],
       inputType: "",
       androidTrack: [],
@@ -71,29 +70,28 @@ export default {
       }
     },
     iosInput: function(e) {
+      console.log(e);
       switch (e.inputType) {
         case INPUT_TYPES.UNCONVERTED_STATE: {
-          this.data = e.data;
-          this.isoTrack.push(e.data);
+          this.iosTrack.push(e.data);
           break;
         }
         case INPUT_TYPES.CONVERETED_STATE: {
-          this.data = e.data;
-          this.isoTrack.push(e.data);
+          this.iosTrack.push(e.data);
           break;
         }
         case INPUT_TYPES.DELETE_UNCONVERTED: {
-          this.isoTrack.pop();
+          this.iosTrack.pop();
           break;
         }
         case INPUT_TYPES.DELETE_CONVERTED: {
-          this.isoTrack.pop();
+          this.iosTrack.pop();
           break;
         }
         default:
       }
       if (e.target.value === "") {
-        this.isoTrack = [];
+        this.iosTrack = [];
       }
     },
     androidInput: function(e) {
@@ -111,7 +109,7 @@ export default {
     },
     reset: function() {
       this.data = "";
-      this.isoTrack = [];
+      this.iosTrack = [];
       this.pcTrack = [];
       this.androidTrack = [];
     }
