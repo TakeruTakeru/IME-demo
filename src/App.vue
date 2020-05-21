@@ -1,28 +1,132 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div>
+      <h3>Input Event Demo</h3>
+      <input @input="onInput" @keydown="onKeyDown" />
+      <p>inputType: {{ inputType }}</p>
+      <p>PC Track: {{ pcTrack }}</p>
+      <button @click="reset">reset</button>
+      <p>IOS Track: {{ iosTrack }}</p>
+      <p>Android Track: {{ androidTrack }}</p>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+const ANDROID = "Android";
+const IOS = "IOS";
+const NULL = "UNKNOWN OS";
+
+const INPUT_TYPES = {
+  UNCONVERTED_STATE: "insertCompositionText",
+  CONVERETED_STATE: "insertFromComposition",
+  DELETE_UNCONVERTED: "deleteCompositionText",
+  DELETE_CONVERTED: "deleteContentBackward"
+};
+
+const KEYDOWN_MAP = {
+  BACKSPACE: "Backspace"
+}
+
+const ua = window.navigator.userAgent.toLowerCase();
+
+const isMobile = ua.indexOf('mobile') > 0;
+const osName = (function(){
+  if (isMobile) {
+    return (ua.indexOf('iphone') != -1 || ua.indexOf('ipad') != -1 ) ? IOS : ANDROID;
+  }
+  return NULL;
+}())
+
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
+  name: "App",
+  data: function() {
+    return {
+      datas: [],
+      data: "",
+      pcTrack: [],
+      inputType: "",
+      androidTrack: [],
+      iosTrack: [],
+    };
+  },
+  methods: {
+    onInput: function(e) {
+      this.inputType = e.inputType;
+      if (osName ===  IOS) {
+        this.iosInput(e);
+      }
+    },
+    onKeyDown: function(e) {
+      switch (osName) {
+        case ANDROID: {
+          this.androidInput(e);
+          break;
+        }
+        case NULL: {
+          this.pcInput(e);
+          break;
+        }
+      }
+    },
+    iosInput: function(e) {
+      switch (e.inputType) {
+        case INPUT_TYPES.UNCONVERTED_STATE: {
+          this.data = e.data;
+          this.isoTrack.push(e.data);
+          break;
+        }
+        case INPUT_TYPES.CONVERETED_STATE: {
+          this.data = e.data;
+          this.isoTrack.push(e.data);
+          break;
+        }
+        case INPUT_TYPES.DELETE_UNCONVERTED: {
+          this.isoTrack.pop();
+          break;
+        }
+        case INPUT_TYPES.DELETE_CONVERTED: {
+          this.isoTrack.pop();
+          break;
+        }
+        default:
+      }
+      if (e.target.value === "") {
+        this.isoTrack = [];
+      }
+    },
+    androidInput: function(e) {
+      switch (e.key) {
+        case KEYDOWN_MAP.BACKSPACE: {
+          this.androidTrack.pop();
+          break;
+        }
+        default:
+          this.androidTrack.push(e.key);
+      }
+    },
+    pcInput: function(e) {
+      this.pcTrack.push(e.key);
+    },
+    reset: function() {
+      this.data = "";
+      this.isoTrack = [];
+      this.pcTrack = [];
+      this.androidTrack = [];
+    }
   }
-}
+};
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style scoped>
+input {
+  font-size: 16px;
+  border: 1px solid black;
+}
+button {
+  height: 20px;
+  width: 40px;
+  border: 1px solid black;
 }
 </style>
