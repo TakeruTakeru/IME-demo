@@ -1,4 +1,4 @@
 module.exports = {
-    publicPath: '/v1/',
+    publicPath: '/IME-demo/',
     outputDir: 'docs'
   }
